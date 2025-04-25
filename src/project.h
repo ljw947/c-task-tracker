@@ -1,6 +1,7 @@
 #ifndef _PROJECT_H
 #define _PROJECT_H
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "task.h"

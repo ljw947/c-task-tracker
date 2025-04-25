@@ -1,2 +1,4 @@
 all:
-	gcc -g -Wall main.c operations.c project.c task.h -o main -lncurses
+	rm -rf build
+	mkdir -p build
+	gcc -g -Wall src/*.c src/*.h -o build/main -lncurses
