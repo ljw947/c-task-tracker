@@ -4,75 +4,71 @@
 
 #include <curses.h>
 
+#include "project.h"
 #include "operations.h"
 
-
-struct task {
-    char* project;
-    unsigned int id;
-};
 
 void newLine() {
     printf("\n");
 }
 
+
 int main() {
-    // struct task myTask = { .project = "test-project", .id = 1 };
-    // printw("Task created from project %s with id %i.", myTask.project, myTask.id);
-
-    int ch;
-
-    // initialise with no tasks
-    struct task taskArray[0];
-
+    int row, col;
+    getmaxyx(stdscr, row, col);
     // start curses mode
     initscr();
-    printw("Task Tracker\n");
+    mvprintw(0, 0, "Task Tracker");
 
-    // Initialise input stuff
     // no need to press enter
     // raw();
 
     // enable reading of all keys not just alphanumeric
     keypad(stdscr, TRUE);
+    // disable echoing of entered characters
     // noecho();
-    bool exit = false;
-    while(!exit) {
-        printw("\nSelect option: ");
-        ch = tolower(getch());
 
-        int ret = 0;
+    // initialise project with no tasks
+    project project;
+    if (!initialiseProject(&project, "my-project")) {
+        mvprintw(1, 0, "Could not initialise new project");
+        return 1;
+    }
+
+    int ch;
+    int ret = 0;
+    while(ret == 0) {
+        mvprintw(1, 0, "Select option: ");
+        ch = tolower(getch());
 
         switch(ch) {
             case 'a':
-                printw("\nAdding new task...");
-                ret = addtask();
+                ret = addtask(&project);
                 break;
             case 'e':
-                printw("\nEditing existing task...");
                 ret = edittask();
                 break;
             case 'd':
-                printw("\nDeleting task...");
                 ret = deletetask();
                 break;
             case 'l':
-                printw("\nListing all tasks...");
-                ret = listtasks();
+                ret = listtasks(&project);
                 break;
             default:  // exit on all other input for now
-                exit = true;
+                ret = 1;
                 break;
         }
 
         refresh();
     }
 
-    printw("\nExiting...");
+    mvprintw(2, 0, "Exiting...");
     refresh();
     sleep(1);  // actually give time for the message to display
     // end curses mode
     endwin();
+
+    clearProject(&project);
 
     return 0;
 }

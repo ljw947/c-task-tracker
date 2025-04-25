@@ -1,2 +1,2 @@
 all:
-	gcc -Wall main.c operations.c -o main -lncurses
+	gcc -g -Wall main.c operations.c project.c task.h -o main -lncurses

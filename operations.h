@@ -1,10 +1,12 @@
 #ifndef _OPERATIONS_H
 #define _OPERATIONS_H
 
-int addtask(void);
+#include "project.h"
+
+int addtask(project *proj);
 int edittask(void);
 int deletetask(void);
 
-int listtasks(void);
+int listtasks(project *proj);
 
 #endif
