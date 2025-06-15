@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <ctype.h>
+#include <string.h>
 #include <unistd.h>  // for sleep
 
 #include <curses.h>
@@ -7,18 +8,22 @@
 #include "project.h"
 #include "operations.h"
 
+const char* optionSelect = "Select option: ";
 
 void newLine() {
     printf("\n");
 }
 
+void printTitle() {
+    mvprintw(0, 0, "Task Tracker");
+}
 
 int main() {
     int row, col;
     getmaxyx(stdscr, row, col);
     // start curses mode
     initscr();
-    mvprintw(0, 0, "Task Tracker");
+    printTitle();
 
     // no need to press enter
     // raw();
@@ -38,7 +43,7 @@ int main() {
     int ch;
     int ret = 0;
     while(ret == 0) {
-        mvprintw(1, 0, "Select option: ");
+        mvprintw(1, 0, optionSelect);
         ch = tolower(getch());
 
         switch(ch) {
@@ -58,10 +63,12 @@ int main() {
                 ret = 1;
                 break;
         }
-
+        // mvprintw(1, strlen(optionSelect), " ");  // replace input char with blank
         refresh();
     }
 
+    clear();
+    printTitle();
     mvprintw(2, 0, "Exiting...");
     refresh();
     sleep(1);  // actually give time for the message to display

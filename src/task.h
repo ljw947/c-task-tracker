@@ -4,6 +4,7 @@
 typedef struct {
     char* project;
     unsigned int id;
+    char* taskName;
 } task;
 
 #endif
